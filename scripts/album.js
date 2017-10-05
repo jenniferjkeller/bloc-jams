@@ -72,16 +72,27 @@ var setCurrentAlbum = function(album) {
       albumSongList.innerHTML += createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
   }
 };
+var child = document.getElementsByClassName('album-view-title')[0];
+var noParent = document.querySelector('html');
 
 var findParentByClassName = function(element, targetClass) {
-    if (element) {
-        var currentParent = element.parentElement;
-        while (currentParent.className !== targetClass && currentParent.className !== null) {
-            currentParent = currentParent.parentElement;
-        }
-        return currentParent;
-    }
-};
+	if (element) {
+  var currentParent = element.parentElement;
+	if (currentParent) {
+  while (currentParent.className && currentParent.className != targetClass) {
+  	currentParent = currentParent.parentElement;
+     }
+ if (currentParent.className == targetClass) {
+ 		return currentParent;
+ } else {
+     alert("No parent with that class name found.");
+ }
+ } else {
+  alert("No parent found.");
+}
+}
+}
+findParentByClassName(child, 'album-view');
 
 var getSongItem = function(element) {
     switch (element.className) {
@@ -139,28 +150,28 @@ songListContainer.addEventListener('mouseover', function(event) {
     }
 });
 
-for (var i = 0; i < songRows.length; i++) {
+  for (var i = 0; i < songRows.length; i++){
  songRows[i].addEventListener('mouseleave', function(event) {
    var songItem = getSongItem(event.target);
    var songItemNumber = songItem.getAttribute('data-song-number');
          if (songItemNumber !== currentlyPlayingSong) {
              songItem.innerHTML = songItemNumber;
          }
+ });
 
   songRows[i].addEventListener('click', function(event) {
     // Event handler call
     clickHandler(event.target);
   });
 }
+};
 
 var index = 1;
-var albums = [albumPicasso, albumMarconi, albumEndOfSummer]
+var albums = [albumPicasso, albumMarconi, albumEndOfSummer];
 albumImage.addEventListener("click", function(event) {
   setCurrentAlbum(albums[index]);
   index++;
     if (index == albums.length) {
       index = 0;
-    };
-
+    }
   });
-};
