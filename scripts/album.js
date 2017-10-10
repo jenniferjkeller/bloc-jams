@@ -1,11 +1,36 @@
 var setSong = function(songNumber) {
+<<<<<<< HEAD
   setSong = parseInt(songNumber);
   currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
 };
 var getSongNumberCell = function(number) {
   return $(getSongNumberCell + number);
 }
+=======
+  if (currentSoundFile) {
+        currentSoundFile.stop();
+    }
+    currentlyPlayingSongNumber = parseInt(songNumber);
 
+ setSong = parseInt(songNumber);
+ currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
+ currentSoundFile = new buzz.sound(currentSongFromAlbum.audioUrl, {
+         // #2
+         formats: [ 'mp3' ],
+         preload: true
+     });
+      setVolume(currentVolume);
+ };
+ var setVolume = function(volume) {
+     if (currentSoundFile) {
+         currentSoundFile.setVolume(volume);
+     }
+ };
+>>>>>>> checkpoint-32-buzz-library
+
+ var getSongNumberCell = function(number) {
+   return $(getSongNumberCell + number);
+ }
 var createSongRow = function(songNumber, songName, songLength) {
    var template =
       '<tr class="album-view-song-item">'
@@ -21,12 +46,21 @@ var createSongRow = function(songNumber, songName, songLength) {
 
  if (currentlyPlayingSong !== null) {
    // Revert to song number for currently playing song because user started playing new song.
+<<<<<<< HEAD
    var currentlyPlayingCell = parseInt($(getSongNumberCell + setSong));
    currentlyPlayingCell.html(setSong);
+=======
+   var currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);
+   currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);
+   currentlyPlayingCell.html(currentlyPlayingSongNumber);
+>>>>>>> checkpoint-32-buzz-library
  }
  if (setSong !== songNumber) {
    // Switch from Play -> Pause button to indicate new song is playing.
+   setSong(songNumber);
+   currentSoundFile.play();
    $(this).html(pauseButtonTemplate);
+<<<<<<< HEAD
    setSong = songNumber;
    currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
    updatePlayerBarSong();
@@ -36,6 +70,20 @@ var createSongRow = function(songNumber, songName, songLength) {
    $('.main-controls .play-pause').html(playerBarPlayButton);
    setSong = null;
    currentSongFromAlbum = null;
+=======
+   currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
+   updatePlayerBarSong();
+ } else if (currentlyPlayingSongNumber === songNumber) {
+  if (currentSoundFile.isPaused()){
+    $(this).html(pauseButtonTemplate);
+    $('.main-controls .play-pause').html(playerBarPauseButton);
+    currentSoundFile.play();
+  } else {
+    $(this).html(playButtonTemplate);
+    $'main-controls .play-pause').html(playerBarPlayButton);
+    currentSoundFile.pause();
+  }
+>>>>>>> checkpoint-32-buzz-library
  }
 };
 
@@ -116,7 +164,12 @@ var nextSong = function() {
     var lastSongNumber = setSong;
 
     // Set a new current song
+<<<<<<< HEAD
     setSong = currentSongIndex + 1;
+=======
+    setSong(currentSongIndex + 1);
+       currentSoundFile.play();
+>>>>>>> checkpoint-32-buzz-library
     currentSongFromAlbum = currentAlbum.songs[currentSongIndex];
 
     // Update the Player Bar information
@@ -142,7 +195,12 @@ var previousSong = function() {
     var lastSongNumber = setSong;
 
     // Set a new current song
+<<<<<<< HEAD
     setSong = currentSongIndex + 1;
+=======
+    setSong(currentSongIndex + 1);
+    currentSoundFile.play();
+>>>>>>> checkpoint-32-buzz-library
     currentSongFromAlbum = currentAlbum.songs[currentSongIndex];
 
     // Update the Player Bar information
@@ -166,6 +224,8 @@ var playerBarPauseButton = '<span class="ion-pause"></span>';
 var currentAlbum = null;
 var setSong = null;
 var currentSongFromAlbum = null;
+var currentSoundFile = null;
+var currentVolume = 80;
 
 var $previousButton = $('.main-controls .previous');
 var $nextButton = $('.main-controls .next');
